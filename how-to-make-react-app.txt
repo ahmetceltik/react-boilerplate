@@ -1,0 +1,44 @@
+1. Create 2 directories, public and src
+2. In the root directory, npm init to initialize the project
+3. Run npm install to install the dependencies, and continue below
+4. Then write the .babelrc file in the root with it's contents
+5. Then write the webpack.config.js file in order to be able to run the development mode
+6. Webpack file explained: {
+
+
+ *************   IGNORE FOR NOW   ************
+
+    path is self explanatory, it allows you to define/find path of files without writing them manually. 
+    ReactRefreshPlugin is to refresh the website as we write and save code.
+    HtmlWebpackPlugin is there to check if your running mode is in development and use the template code stored inside the public/index.html file.
+    It basically takes that HTML code and uses it as a starting point, i.e <div id="root"> </div> where you tell index.js to insert code into
+
+    First check the mode: this will be passed when you run `npm run start` or `npm run build`. This makes sure webpack runs the code properly.
+
+    Entry: which file to look for to start converting code. 
+
+    devServer: for development mode. This is what makes your webpage open on localhost:3000. open command means open the website when you run the code,
+    client: overlay: false turns off nasty errors displayed on the website when there are errors(can experiment if you want by leaving it as true)
+
+    output: publicPath says which directory to put the finished up code in production
+            path: make a directory called build in the root directory where the final build code will go for production mode
+            filename: filename of the JS file that will be converted from ES6 to generic JS 
+    
+    module: this is where you put the rules for webpack. It tells webpack how to treat certain files with extensions
+    {
+        test: test means check for files ending in jpeg/jpg/png using regular expressions / /
+        exclude: which entities to exclude specified by its name, in this case it's node_modules, because its full of shit
+        use: which loader to use, in case of images webpack will use file-loader and url-loader in case you load images from url  
+    }
+
+    plugins: These are external plugins. It tell webpack to use those plugins for certain things. In this case, we tell webpack to use the template file in the public directory for our website for the final index.html in build
+             It also checks if you're in development mode here using the isDevelopment && new ReactRefreshPlugin() to make sure it refreshes the page after each code save
+
+    resolve: If multiple files share the same name but have different extensions, webpack will resolve the one with the extension listed first in the array and skip the rest,
+            so we should not have Navbar.js and Navbar.jsx where one finishes the others code. Both should have their unique names to avoid problems.
+
+for development: npm run start
+"start": "webpack serve --hot",
+
+for production: npm run build
+"build": "cross-env NODE_ENV=production webpack",
